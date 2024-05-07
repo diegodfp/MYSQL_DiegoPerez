@@ -1,8 +1,9 @@
+-- Active: 1715038113479@@172.16.101.129@3306@myguitarshop
 
 create DATABASE escuelaPrueba;
 use escuelaPrueba;
-CREATE TABLE Alumno    (
-  id_alumno        INT            PRIMARY KEY ,
+CREATE TABLE Persona    (
+  id_persona        INT            PRIMARY KEY ,
   nif      VARCHAR(9)   NOT NULL,
   nombre          VARCHAR(25)   NOT NULL,
   apellido1         VARCHAR(50)   NOT NULL,
@@ -14,18 +15,19 @@ CREATE TABLE Alumno    (
   sexo         VARCHAR(7)   NOT NULL,
   tipo         VARCHAR(10)   NOT NULL
 );
-drop Table Alumno;
+
 
 CREATE TABLE Departamento (
     id_departamento int PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
 );
 
-drop TABLE Departamento;
+
 CREATE TABLE Profesor (
     id_profesor int PRIMARY KEY,
     id_departamento int,
-    Foreign Key (id_departamento) REFERENCES Departamento(id_departamento)
+    Foreign Key (id_departamento) REFERENCES Departamento(id_departamento),
+    Foreign Key (id_profesor) REFERENCES Persona(id_persona)
 );
 
 CREATE TABLE Grado (
@@ -58,7 +60,7 @@ CREATE TABLE Alumno_se_matricula_asignatura(
     id_asignatura int,
     id_curso_escolar INT,
     PRIMARY KEY (id_alumno, id_asignatura, id_curso_escolar),
-    Foreign Key (id_alumno) REFERENCES Alumno(id_alumno),
+    Foreign Key (id_alumno) REFERENCES Persona(id_persona),
     Foreign Key (id_asignatura) REFERENCES Asignatura(id_asignatura),
     Foreign Key (id_curso_escolar) REFERENCES Curso_escolar(id_curso_escolar)
 );
