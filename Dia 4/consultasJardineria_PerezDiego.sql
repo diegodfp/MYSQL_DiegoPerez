@@ -125,3 +125,75 @@ select *
 from cliente as C
 where C.ciudad = "Madrid" and C.codigo_empleado_rep_ventas = 11 or C.codigo_empleado_rep_ventas = 30 ;
 
+
+-- #### CONSULTAS CON INNER JOIN ####
+-- Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
+
+use jardineria;
+select C.nombre_cliente, concat( E.nombre, " " , E.apellido1) 
+from cliente as C
+inner join empleado as E on C.codigo_empleado_rep_ventas = E.codigo_empleado;
+
+--  Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.
+select distinct C.nombre_cliente, concat( E.nombre, " " , E.apellido1) 
+from cliente as C
+inner join empleado as E on C.codigo_empleado_rep_ventas = E.codigo_empleado
+inner join  pago as P on P.codigo_cliente = C.codigo_cliente;
+
+-- Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de
+-- la oficina a la que  pertenece el representante. 
+select distinct C.nombre_cliente, concat( E.nombre, " " , E.apellido1) as "nombre completo" , O.ciudad
+from cliente as C
+inner join empleado as E on C.codigo_empleado_rep_ventas = E.codigo_empleado
+inner join  pago as P on P.codigo_cliente = C.codigo_cliente
+inner join oficina as O on O.codigo_oficina = E.codigo_oficina;
+/* Devuelve el nombre de los clientes que  hayan hecho pagos y
+ el nombre de sus representantes junto con la ciudad de la oficina a 
+ la que pertenece el representante.Lista la dirección 
+de las oficinas que tengan clientes en Fuenlabrada. */
+
+
+/*Devuelve el nombre de los clientes y el nombre de sus representantes 
+junto con la ciudad de la oficina a la que pertenece el representante. */
+
+select C.nombre_cliente as "Nombre Cliente",  concat(E.nombre, " ",E.apellido1) as 
+"Empleado Nombre", O.ciudad as "Oficina a la que pertenece"
+from cliente as C
+inner join empleado as E on E.codigo_empleado = C.codigo_empleado_rep_ventas
+inner join oficina as O on O.codigo_oficina = E.codigo_oficina;
+
+/* Devuelve un listado con el nombre de los empleados junto con el nombre de 
+sus jefes. */
+SELECT e.nombre, j.nombre AS nombre_jefe
+FROM empleado e
+LEFT JOIN empleado j ON e.codigo_jefe = j.codigo_empleado; 
+select * from empleado;
+
+/* Devuelve un listado que muestre el nombre de cada empleados, el nombre de su 
+jefe y el nombre del jefe de sus jefe. */ 
+
+SELECT 
+    E1.nombre AS empleado,
+    E2.nombre AS jefe,
+    E3.nombre AS jefe_del_jefe
+FROM 
+    empleado as E1
+    JOIN empleado as E2 ON E1.codigo_jefe = E2.codigo_empleado 
+    LEFT JOIN empleado as E3 ON E2.codigo_jefe = E3.codigo_empleado; 
+    
+/* Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido. */
+
+SELECT DISTINCT c.nombre_cliente
+FROM cliente as c
+JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
+WHERE p.fecha_entrega > p.fecha_esperada OR p.fecha_entrega IS NULL;
+
+-- Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
+
+SELECT DISTINCT c.nombre_cliente, gp.gama
+FROM cliente as c
+JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
+JOIN detalle_pedido as dp ON p.codigo_pedido = dp.codigo_pedido
+JOIN producto as pr ON dp.codigo_producto = pr.codigo_producto
+JOIN gama_producto  as gp ON pr.gama = gp.gama
+ORDER BY c.nombre_cliente, gp.gama;
