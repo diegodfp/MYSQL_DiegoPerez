@@ -116,7 +116,7 @@ select C.nombre
 from ciudad as C
 INNER JOIN pais as P on C.id_pais = P.id_pais
 WHERE P.nombre = "Colombia";
-
+ddd
 
 
 -- DESARROLLADO POR  DIEGO PEREZ C.C 1.098.792.956 --
