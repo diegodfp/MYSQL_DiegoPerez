@@ -1,5 +1,11 @@
 -- Active: 1715038113479@@172.16.101.129@3306@jardineria
 
+
+-- ##############################################
+-- ############### EJERCICIO DIA 4 ##############
+-- ##### CONSULTAS BASE DE DATOS JARDINERIA #####
+-- ##############################################
+
 use jardineria;
 -- Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
 
